@@ -187,9 +187,16 @@ public class ArraySet<T> implements SetADT<T> {
     }
 
     @Override
+    /**
+     *Devuelve un conjunto que es la diferencia entre los conjuntos
+     */
     public SetADT<T> difference(SetADT<T> other) {
         ArraySet<T> nuevoConjunto = new ArraySet<>();
-
+        if(other.isEmpty()) {
+            for (int index = 0; index < count; index++) {
+                nuevoConjunto.add(contents[index]-other[index]);
+            }
+        }
         return nuevoConjunto;
     }
 

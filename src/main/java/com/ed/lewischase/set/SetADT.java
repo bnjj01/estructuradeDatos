@@ -45,5 +45,5 @@ public interface SetADT<T> {
      * conjunto pasado como parámetro.
      * complejidad asintotica
      */
-    public SetADT<T> difference(SetADT<T> other);
+    public SetADT<T> difference (SetADT<T> other);
 }
