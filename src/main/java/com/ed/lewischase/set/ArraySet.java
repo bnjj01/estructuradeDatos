@@ -197,7 +197,7 @@ public class ArraySet<T> implements SetADT<T> {
                 nuevoConjunto.add(contents[index]-other[index]);
             }
         }
-        return nuevoConjunto;
+        return null;
     }
 
 }

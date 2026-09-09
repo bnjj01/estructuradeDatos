@@ -2,6 +2,8 @@ package com.ed.lewischase.stack;
 
 import com.ed.lewischase.LinkedNode.LinearNode;
 
+import java.util.Iterator;
+
 public class LinkedStack<T> implements StackADT<T> {
     
     private LinearNode<T> top;
@@ -74,5 +76,10 @@ public class LinkedStack<T> implements StackADT<T> {
         }
             
         return result;
+    }
+
+    @Override
+    public Iterator<T> LinkedStackIterator() {
+        return new LinkedStackIterator(top);
     }
 }

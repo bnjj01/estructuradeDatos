@@ -1,5 +1,7 @@
 package com.ed.lewischase.stack;
 
+import java.util.Iterator;
+
 public interface StackADT<T> {
     //Añade un elemento a la cima de la pila
     public void push(T element);
@@ -13,4 +15,9 @@ public interface StackADT<T> {
     public int size();
     //Devuelve una representación de la pila en forma de cadena de caracteres.
     public String toString();
+
+    /**
+     * Devuelve un iterador sobre los elementos de la pila
+     */
+    public Iterator<T> LinkedStackIterator();
 }
