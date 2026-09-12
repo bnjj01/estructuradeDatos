@@ -80,5 +80,17 @@ public class Ejercicio01 {
         //11.toString
         System.out.println("11-");
         System.out.println(conjunto02.toString());
+
+        //12.difference
+        conjunto01.add(20);
+        conjunto01.add(19);
+        conjunto01.add(11);
+        conjunto01.add(80);
+        conjunto02.add(20);
+        conjunto02.add(11);
+        conjunto02.add(80);
+        System.out.println("12- difference");
+        System.out.println(conjunto01.difference(conjunto02));
+
     }
 }

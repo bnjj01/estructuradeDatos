@@ -1,0 +1,35 @@
+public SetADT<T> difference(SetADT<T> other) {
+        ArraySet<T> nuevoConjunto = new ArraySet<>();
+
+        for (int index = 0; index < count; index++) {
+            T elementActual = contents[index];
+            if(!other.contains(elementActual)) {
+                nuevoConjunto.add(elementActual);
+            }
+        }
+        return nuevoConjunto;
+    }
+1. 1
+2. for (int index = 0; index < count; index++) n
+3. 2
+4. if(!other.contains(elementActual)) m
+5. 1
+O(nm)
+
+public SetADT<T> intersection(SetADT<T> other) {
+        ArraySet<T> nuevoConjunto = new ArraySet<>();
+
+        for(int index = 0; index < count; index++){
+            T elementActual = contents[index];
+            if(other.contains(elementActual)){
+               nuevoConjunto.add(elementActual);
+            }
+        }
+        return nuevoConjunto;
+    }
+ 1. 1
+ 2. for (int index = 0; index < count; index++) n
+ 3. 2
+ 4. if(other.contains(elementActual)) m
+ 5. 1
+ O(nm)

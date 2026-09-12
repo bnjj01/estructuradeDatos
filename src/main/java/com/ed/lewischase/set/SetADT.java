@@ -41,9 +41,12 @@ public interface SetADT<T> {
     public String toString();
 
     /**
-     * Devuelve un nuevo conjunto que es la diferencia entre el conjunto actual y el
-     * conjunto pasado como parámetro.
-     * complejidad asintotica
+     * Devuelve un nuevo conjunto que es la diferencia entre el conjunto actual y el conjunto pasado como parámetro.
      */
     public SetADT<T> difference (SetADT<T> other);
+
+    /**
+     * Devuelve un nuevo conjunto que es la interseccion entre el conjunto actual y el conjunto pasado como parametro.
+     */
+    public SetADT<T> intersection (SetADT<T> other);
 }

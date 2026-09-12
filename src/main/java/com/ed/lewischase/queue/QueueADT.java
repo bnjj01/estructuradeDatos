@@ -1,5 +1,7 @@
 package com.ed.lewischase.queue;
 
+import java.util.Iterator;
+
 public interface QueueADT<T> {
     //Añade un elemento al final de la cola
     public void enqueue(T element);
@@ -13,4 +15,8 @@ public interface QueueADT<T> {
     public int size();
     //Devuelve una representación de la cola en forma de cadena de caracteres
     public String toString();
+    /**
+     * Devuelve un iterador sobre los elementos de la cola
+     */
+    public Iterator<T> LinkedQueueIterator();
 }

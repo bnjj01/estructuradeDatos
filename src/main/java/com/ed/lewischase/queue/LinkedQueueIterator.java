@@ -1,15 +1,19 @@
-package com.ed.lewischase.stack;
+package com.ed.lewischase.queue;
 
 import com.ed.lewischase.LinkedNode.LinearNode;
 
 import java.util.Iterator;
 
-public class LinkedStackIterator<T> implements Iterator<T> {
-
+public class LinkedQueueIterator<T> implements Iterator<T> {
     private LinearNode<T> aux;
 
-    public LinkedStackIterator(LinearNode<T> top) {
-        this.aux = top;
+    public LinkedQueueIterator(LinearNode<T> aux) {
+        this.aux = aux;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return aux != null;
     }
 
     @Override
@@ -17,10 +21,5 @@ public class LinkedStackIterator<T> implements Iterator<T> {
         T element = aux.getElement();
         aux = aux.getNext();
         return element;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return aux != null;
     }
 }

@@ -2,6 +2,8 @@ package com.ed.lewischase.queue;
 
 import com.ed.lewischase.LinkedNode.LinearNode;
 
+import java.util.Iterator;
+
 public class LinkedQueue<T> implements QueueADT<T>{
     
     private LinearNode<T> front, rear;
@@ -80,5 +82,10 @@ public class LinkedQueue<T> implements QueueADT<T>{
         }
             
         return result;
-    }   
+    }
+
+    @Override
+    public Iterator<T> LinkedQueueIterator() {
+        return new LinkedQueueIterator<>(front);
+    }
 }

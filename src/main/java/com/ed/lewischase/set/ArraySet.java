@@ -188,16 +188,39 @@ public class ArraySet<T> implements SetADT<T> {
 
     @Override
     /**
-     *Devuelve un conjunto que es la diferencia entre los conjuntos
+     * Devuelve un conjunto que es la diferencia entre los conjuntos
+     * Complejidad asintotica: O(nm)
      */
     public SetADT<T> difference(SetADT<T> other) {
         ArraySet<T> nuevoConjunto = new ArraySet<>();
-        if(other.isEmpty()) {
-            for (int index = 0; index < count; index++) {
-                nuevoConjunto.add(contents[index]-other[index]);
+
+        for (int index = 0; index < count; index++) {
+            T elementActual = contents[index];
+            if(!other.contains(elementActual)) {
+                nuevoConjunto.add(elementActual);
+            }{
+                return null;
             }
         }
-        return null;
+        return nuevoConjunto;
     }
 
+    /**
+     * Devuelve un conjunto que es la interseccion de los conjuntos.
+     * Complejidad asintotica: O(nm)
+     * @param other
+     * @return
+     */
+    @Override
+    public SetADT<T> intersection(SetADT<T> other) {
+        ArraySet<T> nuevoConjunto = new ArraySet<>();
+
+        for(int index = 0; index < count; index++){
+            T elementActual = contents[index];
+            if(other.contains(elementActual)){
+               nuevoConjunto.add(elementActual);
+            }
+        }
+        return nuevoConjunto;
+    }
 }
