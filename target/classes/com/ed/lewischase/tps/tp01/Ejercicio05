@@ -1,0 +1,13 @@
+Si se invierten los pasos al insertar un nodo al principio de la
+lista, se perderia la referencia a todos los elementos
+de la lista original, dejando unicamente el nuevo nodo
+
+El puntero principal de la lista (FRONT) se actualiza para apuntar
+directamente al nuevo nodo. Al hacer esto antes de enlazar el nodo, se
+sobrescribe la única flecha que se conectaba con el primer elemento de
+la lista original. Toda la cadena de nodos queda "huérfana" y flotando
+en la memoria sin forma de acceder a ella.
+Cuando se intenta que el nuevo nodo apunte al resto de la lista usando
+ la variable FRONT, resulta que ahora FRONT apunta al propio nodo nuevo.
+ El resultado es que el nuevo nodo termina apuntándose a sí mismo, creando
+ una referencia circular de un solo elemento.

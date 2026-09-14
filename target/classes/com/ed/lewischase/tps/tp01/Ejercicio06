@@ -1,0 +1,10 @@
+Si se invierten los pasos al insertar un nuevo nodo en el medio de una lista
+enlazada se perdería el acceso a toda la midad resante de la lista original y
+el nuevo nodo quedaria atrapado en un bucle apuntandose a si mismo.
+
+Al actualizar el puntero del nodo actual para que apunte al nuevo nodo
+se sobreescribe el enlace original lo que conlleva a perder la unica
+referencia que se tiene para acceder a los siguientes nodos por lo que
+esos nodos se quedan innaccesibles. Cuando el programa lee CURRENT.next,
+el nodo se apunta asi mismo.
+
