@@ -48,9 +48,40 @@ public class LinkedList<T> implements ListADT<T>{
 
     @Override
     public T remove(T element) throws EmptyListException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        if(isEmpty()) throw new EmptyListException();
+        if(!contains(element)) throw new ElementNotFoundException(element.toString());
+        LinearNode<T> current = front;
+        LinearNode<T> previous = null;
+        T elementoEliminado;
+        while(current != null){
+            if(!current.getElement().equals(element)){
+                previous = current;
+                current = current.getNext();
+            }else if(current == front) {
+                    elementoEliminado = current.getElement();
+                    front = current.getNext();
+                    count--;
+                    return elementoEliminado;
+                }else if (current == rear){
+                    elementoEliminado = current.getElement();
+                    previous.setNext(null);
+                    rear = previous;
+                    current = null;
+                    count--;
+                    return elementoEliminado;
+                }else{
+                    elementoEliminado = current.getElement();
+                    LinearNode<T> siguiente = current.getNext();
+                    current.setNext(null);
+                    previous.setNext(siguiente);
+                    current = siguiente;
+                    count--;
+                    return elementoEliminado;
+                }
+        }
+        return elementoEliminado;
     }
+
 
     @Override
     public T removeFirst() throws EmptyListException {
@@ -66,8 +97,7 @@ public class LinkedList<T> implements ListADT<T>{
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        return count;
     }
 
     
