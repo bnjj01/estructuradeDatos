@@ -5,13 +5,11 @@ import java.util.Iterator;
 import com.ed.lewischase.LinkedNode.LinearNode;
 
 public class LinkedList<T> implements ListADT<T>{
-    private LinearNode<T> front;
-    private LinearNode<T> rear;
-    private int count;
+    protected LinearNode<T> front, rear;
+    protected int count;
 
     public LinkedList() {
-        front = null;
-        rear = null;
+        front = rear = null;
         count = 0;
     }
     
@@ -42,8 +40,8 @@ public class LinkedList<T> implements ListADT<T>{
 
     @Override
     public T last() throws EmptyListException {
-        // TODO Auto-generated method stub
-        return null;
+        if(isEmpty()) throw new EmptyListException();
+        return rear.getElement();
     }
 
     @Override
@@ -52,12 +50,18 @@ public class LinkedList<T> implements ListADT<T>{
         if(!contains(element)) throw new ElementNotFoundException(element.toString());
         LinearNode<T> current = front;
         LinearNode<T> previous = null;
-        T elementoEliminado;
+        T elementoEliminado = null;
         while(current != null){
             if(!current.getElement().equals(element)){
                 previous = current;
                 current = current.getNext();
-            }else if(current == front) {
+            }else if(current == front && current == rear){
+                    elementoEliminado = current.getElement();
+                    front = null;
+                    rear = null;
+                    count--;
+                    return elementoEliminado;
+                } else if(current == front) {
                     elementoEliminado = current.getElement();
                     front = current.getNext();
                     count--;
@@ -83,22 +87,75 @@ public class LinkedList<T> implements ListADT<T>{
     }
 
 
+    /*
+    public T remove(T element) throws EmptyListException, ElementNotFoundException {
+        if(isEmpty()) throw new EmptyListException();
+        //convierto el elemento a eliminar en un objeto comparable para poder compararlo con los elementos de la lista
+        Comparable<T> elementComp= (Comparable<T>)element;
+    
+        LinearNode<T> current = front;
+        LinearNode<T> previous = null;
+
+        while(current != null && elementComp.compareTo(current.getElement()) != 0){
+            previous = current;
+            current = current.getNext();
+        }
+            //verifico si existe el elemento enontrado
+            if(current == null){throw new ElementNotFoundException("Elemento no encontrado");}
+            previous.setNext(current.getNext());
+        }
+        T copy = current.getElement();
+        if(size() == 1){
+            front = rear = null;
+        }else if(current == front){
+            front = front.getNext();
+        }else if(current == rear){
+            rear = previous;
+            rear.setNext(null);
+        }else{
+            previus.setNext(current.getNext());
+        }
+        count--;
+        return copy;
+    }
+    */
+
     @Override
     public T removeFirst() throws EmptyListException {
-        // TODO Auto-generated method stub
-        return null;
+        if(isEmpty()) throw new EmptyListException();
+        LinearNode<T> siguiente = front.getNext();
+        T elementoEliminado = front.getElement();
+        if(front == rear){
+            front = rear = null;
+        } else{
+            elementoEliminado = front.getElement();
+            front = siguiente;
+        }
+        count--;
+        return elementoEliminado;
     }
 
     @Override
     public T removeLast() throws EmptyListException {
-        // TODO Auto-generated method stub
-        return null;
+        if(isEmpty()) throw new EmptyListException();
+        LinearNode<T> previus = front;
+        T elementoEliminado = rear.getElement();
+        if(front == rear){ 
+            front = rear = null;
+            count--;
+            return elementoEliminado;
+        }
+        while(previus.getNext() != rear){
+            previus = previus.getNext();
+        }
+        rear = previus;
+        rear.setNext(null);
+        count--;
+        return elementoEliminado;
     }
 
     @Override
     public int size() {
         return count;
     }
-
-    
 }
