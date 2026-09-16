@@ -34,8 +34,7 @@ public class LinkedList<T> implements ListADT<T>{
 
     @Override
     public Iterator<T> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+        return new LinkedListIterator<T>(front);
     }
 
     @Override
@@ -47,52 +46,9 @@ public class LinkedList<T> implements ListADT<T>{
     @Override
     public T remove(T element) throws EmptyListException, ElementNotFoundException {
         if(isEmpty()) throw new EmptyListException();
-        if(!contains(element)) throw new ElementNotFoundException(element.toString());
-        LinearNode<T> current = front;
-        LinearNode<T> previous = null;
-        T elementoEliminado = null;
-        while(current != null){
-            if(!current.getElement().equals(element)){
-                previous = current;
-                current = current.getNext();
-            }else if(current == front && current == rear){
-                    elementoEliminado = current.getElement();
-                    front = null;
-                    rear = null;
-                    count--;
-                    return elementoEliminado;
-                } else if(current == front) {
-                    elementoEliminado = current.getElement();
-                    front = current.getNext();
-                    count--;
-                    return elementoEliminado;
-                }else if (current == rear){
-                    elementoEliminado = current.getElement();
-                    previous.setNext(null);
-                    rear = previous;
-                    current = null;
-                    count--;
-                    return elementoEliminado;
-                }else{
-                    elementoEliminado = current.getElement();
-                    LinearNode<T> siguiente = current.getNext();
-                    current.setNext(null);
-                    previous.setNext(siguiente);
-                    current = siguiente;
-                    count--;
-                    return elementoEliminado;
-                }
-        }
-        return elementoEliminado;
-    }
-
-
-    /*
-    public T remove(T element) throws EmptyListException, ElementNotFoundException {
-        if(isEmpty()) throw new EmptyListException();
         //convierto el elemento a eliminar en un objeto comparable para poder compararlo con los elementos de la lista
         Comparable<T> elementComp= (Comparable<T>)element;
-    
+
         LinearNode<T> current = front;
         LinearNode<T> previous = null;
 
@@ -100,11 +56,11 @@ public class LinkedList<T> implements ListADT<T>{
             previous = current;
             current = current.getNext();
         }
-            //verifico si existe el elemento enontrado
-            if(current == null){throw new ElementNotFoundException("Elemento no encontrado");}
-            previous.setNext(current.getNext());
-        }
+        //verifico si existe el elemento enontrado
+        if(current == null){throw new ElementNotFoundException("Elemento no encontrado");}
+
         T copy = current.getElement();
+
         if(size() == 1){
             front = rear = null;
         }else if(current == front){
@@ -113,12 +69,11 @@ public class LinkedList<T> implements ListADT<T>{
             rear = previous;
             rear.setNext(null);
         }else{
-            previus.setNext(current.getNext());
+            previous.setNext(current.getNext());
         }
         count--;
         return copy;
     }
-    */
 
     @Override
     public T removeFirst() throws EmptyListException {
@@ -128,7 +83,6 @@ public class LinkedList<T> implements ListADT<T>{
         if(front == rear){
             front = rear = null;
         } else{
-            elementoEliminado = front.getElement();
             front = siguiente;
         }
         count--;
@@ -138,17 +92,17 @@ public class LinkedList<T> implements ListADT<T>{
     @Override
     public T removeLast() throws EmptyListException {
         if(isEmpty()) throw new EmptyListException();
-        LinearNode<T> previus = front;
+        LinearNode<T> previous = front;
         T elementoEliminado = rear.getElement();
         if(front == rear){ 
             front = rear = null;
             count--;
             return elementoEliminado;
         }
-        while(previus.getNext() != rear){
-            previus = previus.getNext();
+        while(previous.getNext() != rear){
+            previous = previous.getNext();
         }
-        rear = previus;
+        rear = previous;
         rear.setNext(null);
         count--;
         return elementoEliminado;
@@ -157,5 +111,14 @@ public class LinkedList<T> implements ListADT<T>{
     @Override
     public int size() {
         return count;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(LinearNode<T> current = front; current != null; current = current.getNext()){
+            sb.append(current.getElement()).append(" ");
+        }
+        return sb.toString().trim();
     }
 }

@@ -218,7 +218,7 @@ public class ArraySet<T> implements SetADT<T> {
         for(int index = 0; index < count; index++){
             T elementActual = contents[index];
             if(other.contains(elementActual)){
-               nuevoConjunto.add(elementActual);
+                nuevoConjunto.add(elementActual);
             }
         }
         return nuevoConjunto;

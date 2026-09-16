@@ -4,7 +4,6 @@ import com.ed.lewischase.LinkedNode.LinearNode;
 
 public class LinkedListIterator<T> implements Iterator<T> {
     private LinearNode<T> current;
-    T element;
 
     public LinkedListIterator(LinearNode<T> front) {
         current = front;
@@ -21,5 +20,4 @@ public class LinkedListIterator<T> implements Iterator<T> {
         current = current.getNext();
         return result;
     }
-    
 }
