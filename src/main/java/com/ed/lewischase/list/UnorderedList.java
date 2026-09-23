@@ -1,24 +1,20 @@
 package com.ed.lewischase.list;
 
-import com.ed.lewischase.LinkedNode.LinearNode;
+import com.ed.lewischase.LinkedNode.DoubleNode;
 
-import java.util.Iterator;
-
-public class UnorderedList<T> implements UnorderedListADT<T>{
-    protected LinearNode<T> front,rear;
-    protected int count;
+public class UnorderedList<T> extends DoubleLinkedList<T> implements UnorderedListADT<T>{
     public UnorderedList(){
-        front =rear=null;
-        count=0;
+        super();
     }
 
     @Override
     public void addToFront(T element) {
-        LinearNode<T> newNode = new LinearNode<>(element);
+        DoubleNode<T> newNode = new DoubleNode<>(element);
         if(isEmpty()){
             front = rear = newNode;
         }else{
             newNode.setNext(front);
+            front.setPrevious(newNode);
             front=newNode;
         }
         count++;
@@ -26,11 +22,12 @@ public class UnorderedList<T> implements UnorderedListADT<T>{
 
     @Override
     public void addToRear(T element) {
-        LinearNode<T> newNode = new LinearNode<>(element);
+        DoubleNode<T> newNode = new DoubleNode<>(element);
         if(isEmpty()){
             front = rear = newNode;
         }else{
             rear.setNext(newNode);
+            newNode.setPrevious(rear);
             rear=newNode;
         }
         count++;
@@ -39,121 +36,66 @@ public class UnorderedList<T> implements UnorderedListADT<T>{
     @Override
     public void addAfter(T element, T target) throws ElementNotFoundException, EmptyListException {
         if(isEmpty())throw new EmptyListException();
-        LinearNode<T> newNode = new LinearNode<>(element);
+        DoubleNode<T> newNode = new DoubleNode<>(element);
 
-        LinearNode<T> current=front;
+        DoubleNode<T> current=front;
         while(current!=null){
             if(current.getElement().equals(target)){
                 newNode.setNext(current.getNext());
-                current.setNext(newNode);
+                newNode.setPrevious(current);
                 if(current == rear){
                     rear=newNode;
+                }else{
+                    current.getNext().setPrevious(newNode);
                 }
+                current.setNext(newNode);
                 count++;
                 return;
             }
-
             current = current.getNext();
         }
-
         throw new ElementNotFoundException(target.toString());
     }
-
-    @Override
-    public boolean contains(T target) {
-        for(LinearNode<T> current = front; current != null; current = current.getNext()){
-            if( target != null && target.equals(current.getElement())) return true;
+    public void removeDuplicates() {
+        // Si está vacía o tiene un solo elemento, no hay duplicados posibles
+        if (isEmpty() || front == rear) {
+            return;
         }
-        return false;
-    }
 
-    @Override
-    public T first() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        return front.getElement();
-    }
+        DoubleNode<T> current = front;
 
-    @Override
-    public boolean isEmpty() {
-        return front==null;
-    }
+        // Bucle externo: Elige un elemento para comparar
+        while (current != null) {
 
-    @Override
-    public Iterator<T> iterator() {
-        return new LinkedListIterator<T>(front);
-    }
+            DoubleNode<T> runner = current.getNext(); // El corredor empieza un paso adelante
 
-    @Override
-    public T last() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        return rear.getElement();
-    }
+            // Bucle interno: Busca copias en el resto de la lista
+            while (runner != null) {
 
-    @Override
-    public T remove(T element) throws EmptyListException, ElementNotFoundException {
-        if(isEmpty()) throw new EmptyListException();
+                // Guardamos el siguiente nodo ANTES de borrar el runner, para no perder el rastro
+                DoubleNode<T> nextNode = runner.getNext();
 
-        LinearNode<T> current = front;
-        LinearNode<T> previous = null;
+                if (runner.getElement().equals(current.getElement())) {
 
-        while(current != null && !element.equals(current.getElement())){
-            previous = current;
+                    // ¡ENCONTRAMOS UN DUPLICADO! Hay que eliminar el nodo 'runner'.
+                    // Recuerda que el 'runner' NUNCA será el 'front' porque siempre empieza adelante de current.
+
+                    if (runner == rear) {
+                        // TODO: Lógica si el duplicado es el último elemento (Mover rear y cortar flecha next)
+
+                    } else {
+                        // TODO: Lógica si el duplicado está en el medio (Conectar el de atrás con el de adelante a 2 manos)
+
+                    }
+                    count--; // Restamos al contador porque eliminamos uno
+                }
+
+                // Avanzamos el corredor al siguiente nodo que habíamos guardado
+                runner = nextNode;
+            }
+
+            // Cuando el corredor revisa todo, current avanza un paso para elegir el siguiente elemento
             current = current.getNext();
         }
-        //verifico si existe el elemento enontrado
-        if(current == null){throw new ElementNotFoundException("Elemento no encontrado");}
-
-        T copy = current.getElement();
-
-        if(size() == 1){
-            front = rear = null;
-        }else if(current == front){
-            front = front.getNext();
-        }else if(current == rear){
-            rear = previous;
-            rear.setNext(null);
-        }else{
-            previous.setNext(current.getNext());
-        }
-        count--;
-        return copy;
-    }
-
-    @Override
-    public T removeFirst() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        LinearNode<T> siguiente = front.getNext();
-        T elementoEliminado = front.getElement();
-        if(front == rear){
-            front = rear = null;
-        } else{
-            front = siguiente;
-        }
-        count--;
-        return elementoEliminado;
-    }
-
-    @Override
-    public T removeLast() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        LinearNode<T> previous = front;
-        T elementoEliminado = rear.getElement();
-        if(front == rear){
-            front = rear = null;
-            count--;
-            return elementoEliminado;
-        }
-        while(previous.getNext() != rear){
-            previous = previous.getNext();
-        }
-        rear = previous;
-        rear.setNext(null);
-        count--;
-        return elementoEliminado;
-    }
-
-    @Override
-    public int size() {
-        return count;
     }
 }
