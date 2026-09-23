@@ -3,8 +3,8 @@ import com.ed.lewischase.LinkedNode.LinearNode;
 import java.util.Iterator;
 
 public class OrderedList<T> implements OrderedListADT<T> {
-    LinearNode<T> front, rear;
-    int count;
+    protected LinearNode<T> front, rear;
+    protected int count;
 
     public OrderedList() {
         front = rear = null;
