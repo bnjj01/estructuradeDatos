@@ -1,14 +1,9 @@
 package com.ed.lewischase.list;
 import com.ed.lewischase.LinkedNode.LinearNode;
-import java.util.Iterator;
 
-public class OrderedList<T> implements OrderedListADT<T> {
-    protected LinearNode<T> front, rear;
-    protected int count;
-
+public class OrderedList<T> extends LinkedList<T> implements OrderedListADT<T> {
     public OrderedList() {
-        front = rear = null;
-        count = 0;
+        super();
     }
 
     @Override
@@ -44,115 +39,26 @@ public class OrderedList<T> implements OrderedListADT<T> {
         count++;
     }
 
-    @Override
-    public boolean contains(T target) {
-        Comparable<T> elemComp = (Comparable<T>)target;
-        LinearNode<T> current=front;
+    public void removeDuplicates() {
+        if (isEmpty() || front == rear) {
+            return;
+        }
+        LinearNode<T> current = front;
+        while (current != null && current.getNext() != null) {
 
-        if(isEmpty()) return false;
+            LinearNode<T> siguiente = current.getNext();
 
-        while(current != null){
-            if(elemComp.compareTo(current.getElement()) == 0){
-                return true;
+            if (current.getElement().equals(siguiente.getElement())) {
+                current.setNext(siguiente.getNext());
+                if (siguiente == rear) {
+                    rear = current;
+                }
+                count--;
+
+            } else {
+                current = current.getNext();
             }
-            current=current.getNext();
         }
-        return false;
     }
 
-    @Override
-    public T first() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        return front.getElement();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        if(count == 0) return true;
-        return false;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new OrderedListIterator<>(front);
-    }
-
-    @Override
-    public T last() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        return rear.getElement();
-    }
-
-    @Override
-    public T remove(T element) throws EmptyListException, ElementNotFoundException {
-        if(isEmpty()) throw new EmptyListException();
-        Comparable<T> elemComp = (Comparable<T>)element;
-        LinearNode<T> current = front;
-        LinearNode<T> previous = null;
-
-        while(current != null && elemComp.compareTo(current.getElement()) != 0){
-            previous = current;
-            current = current.getNext();
-        }
-
-        if(current == null){throw new ElementNotFoundException(element.toString());}
-
-        T copy = current.getElement();
-        
-        if(size() == 1){
-            front = rear = null;
-        }else if(current == front){
-            front = front.getNext();
-        }else if(current == rear){
-            rear = previous;
-            rear.setNext(null);
-        }else{
-            previous.setNext(current.getNext());
-        }
-        count--;
-        return copy;
-    }
-
-    @Override
-    public T removeFirst() throws EmptyListException {
-        if(isEmpty()) throw new EmptyListException();
-        T copy = front.getElement();
-        if(count == 1){
-            front = rear = null;
-        }else{
-            front = front.getNext();
-        }
-        count--;
-        return copy;
-    }
-
-    @Override
-    public T removeLast() throws EmptyListException {
-        if(isEmpty())throw new EmptyListException();
-        T copy = rear.getElement();
-        if(count == 1){
-            front = rear= null;
-            count--;
-            return copy;
-        }
-
-        LinearNode<T> current = front;
-        LinearNode<T> previous = null;
-
-        while(current != rear){
-            previous = current;
-            current = current.getNext();
-        }
-        
-        rear = previous;
-        rear.setNext(null);
-        count--;
-        return copy;
-    }
-
-    @Override
-    public int size() {
-        return count;
-    }
-    
 }

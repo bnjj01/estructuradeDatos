@@ -57,44 +57,29 @@ public class UnorderedList<T> extends DoubleLinkedList<T> implements UnorderedLi
         throw new ElementNotFoundException(target.toString());
     }
     public void removeDuplicates() {
-        // Si está vacía o tiene un solo elemento, no hay duplicados posibles
         if (isEmpty() || front == rear) {
             return;
         }
-
         DoubleNode<T> current = front;
-
-        // Bucle externo: Elige un elemento para comparar
         while (current != null) {
-
-            DoubleNode<T> runner = current.getNext(); // El corredor empieza un paso adelante
-
-            // Bucle interno: Busca copias en el resto de la lista
+            DoubleNode<T> runner = current.getNext();
             while (runner != null) {
-
-                // Guardamos el siguiente nodo ANTES de borrar el runner, para no perder el rastro
                 DoubleNode<T> nextNode = runner.getNext();
-
                 if (runner.getElement().equals(current.getElement())) {
-
-                    // ¡ENCONTRAMOS UN DUPLICADO! Hay que eliminar el nodo 'runner'.
-                    // Recuerda que el 'runner' NUNCA será el 'front' porque siempre empieza adelante de current.
-
                     if (runner == rear) {
-                        // TODO: Lógica si el duplicado es el último elemento (Mover rear y cortar flecha next)
-
+                        rear=runner.getPrevious();
+                        rear.setNext(null);
                     } else {
-                        // TODO: Lógica si el duplicado está en el medio (Conectar el de atrás con el de adelante a 2 manos)
-
+                        DoubleNode<T> aux;
+                        aux= runner.getPrevious();
+                        aux.setNext(runner.getNext());
+                        aux=runner.getNext();
+                        aux.setPrevious(runner.getPrevious());
                     }
-                    count--; // Restamos al contador porque eliminamos uno
+                    count--;
                 }
-
-                // Avanzamos el corredor al siguiente nodo que habíamos guardado
                 runner = nextNode;
             }
-
-            // Cuando el corredor revisa todo, current avanza un paso para elegir el siguiente elemento
             current = current.getNext();
         }
     }

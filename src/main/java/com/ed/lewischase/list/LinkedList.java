@@ -12,11 +12,19 @@ public class LinkedList<T> implements ListADT<T>{
         front = rear = null;
         count = 0;
     }
-    
+
     @Override
     public boolean contains(T target) {
-        for(LinearNode<T> current = front; current != null; current = current.getNext()){
-            if( target != null && target.equals(current.getElement())) return true;
+        Comparable<T> elemComp = (Comparable<T>)target;
+        LinearNode<T> current=front;
+
+        if(isEmpty()) return false;
+
+        while(current != null){
+            if(elemComp.compareTo(current.getElement()) == 0){
+                return true;
+            }
+            current=current.getNext();
         }
         return false;
     }
