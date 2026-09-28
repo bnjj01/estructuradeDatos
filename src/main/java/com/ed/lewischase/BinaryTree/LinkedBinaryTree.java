@@ -74,9 +74,8 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 
     @Override
     public boolean contains(T targetElement) {
-        if(findAgain(targetElement, next)){
-
-        }
+        BinaryTreeNode<T> elementoBuscado = findAgain(targetElement, root);
+        return elementoBuscado!= null;
     }
 
     @Override
