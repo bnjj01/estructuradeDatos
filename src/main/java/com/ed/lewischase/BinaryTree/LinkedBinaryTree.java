@@ -58,7 +58,8 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 
     @Override
     public void removeAllElements() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        count=0;
+        root=null;
     }
 
     @Override
@@ -73,7 +74,9 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 
     @Override
     public boolean contains(T targetElement) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(findAgain(targetElement, next)){
+
+        }
     }
 
     @Override
