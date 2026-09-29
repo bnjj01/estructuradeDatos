@@ -3,10 +3,8 @@ package com.ed.lewischase.BinaryTree;
 import com.ed.lewischase.LinkedNode.BinaryTreeNode;
 import com.ed.lewischase.stack.EmptyStackException;
 import com.ed.lewischase.stack.LinkedStack;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 
 public class inOrderiterator<T> implements Iterator<T> {
     private LinkedStack<BinaryTreeNode<T>> stack;

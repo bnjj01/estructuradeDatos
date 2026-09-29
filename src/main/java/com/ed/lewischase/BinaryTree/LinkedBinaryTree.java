@@ -2,6 +2,7 @@ package com.ed.lewischase.BinaryTree;
 
 import java.util.Iterator;
 import com.ed.lewischase.LinkedNode.BinaryTreeNode;
+import com.ed.lewischase.list.UnorderedList;
 
 /**
  * Crea un árbol binario vacío.
@@ -114,12 +115,144 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 
     @Override
     public Iterator<T> iteratorLevelOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new LevelOrderIterator<>(root);
     }
 
     @Override
     public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        Iterator<T> iterador = iteratorInOrder();
+
+        while (iterador.hasNext()) {
+            sb.append(iterador.next().toString()).append(" ");
+        }
+
+        return sb.toString().trim();
     }
 
+    public boolean esAncestro(T v1, T v2){
+        BinaryTreeNode<T> nodo1 = buscarNodo(root, v1);
+        if(nodo1 == null){
+            return false;
+        }
+
+        return contiene(nodo1, v2);
+    }
+
+    private BinaryTreeNode<T> buscarNodo(BinaryTreeNode<T> root, T valor){
+        if(root == null) return null;
+
+        if(root.getElement().equals(valor)) return root;
+
+        BinaryTreeNode<T> encontrado = buscarNodo(root.getLeft(), valor);
+        if(encontrado == null) encontrado = buscarNodo(root.getRight(), valor);
+
+        return encontrado;
+    }
+
+    private boolean contiene(BinaryTreeNode<T> root, T valor){
+        if (root == null) return false;
+
+        if(root.getElement().equals(valor)) return true;
+
+        return contiene(root.getLeft(), valor) || contiene(root.getRight(), valor);
+    }
+
+    public int contarNodos(BinaryTreeNode<T> nodo){
+        if(nodo == null){
+            return 0;
+        }
+        return 1 + contarNodos(nodo.getLeft()) + contarNodos(nodo.getRight());
+    }
+
+    public int maximaProfundidad(){
+        return calcularProfundidad(root);
+    }
+
+    private int calcularProfundidad(BinaryTreeNode<T> nodo){
+        int profIzq = calcularProfundidad(nodo.getLeft());
+        int profDer = calcularProfundidad(nodo.getRight());
+        int profundidadMayor;
+
+        if (profIzq > profDer)
+            profundidadMayor = profIzq;
+        else
+            profundidadMayor = profDer;
+        return 1 + profundidadMayor;
+    }
+
+    public boolean equals(LinkedBinaryTree<T> otro){
+        return sonIguales(this.root, otro.root);
+    }
+
+    private boolean sonIguales(BinaryTreeNode<T> n1, BinaryTreeNode<T> n2){
+        if (n1 == null && n2 == null) return true;
+        if (n1 == null || n2 == null) return false;
+
+        Comparable<T> val1 = (Comparable<T>)n1.getElement();
+        T val2 = n2.getElement();
+
+        if (val1.compareTo(val2) !=0) return false;
+
+        return sonIguales(n1.getLeft(), n2.getLeft()) && sonIguales(n1.getRight(), n2.getRight());
+    }
+
+    public boolean esEquilibradoNodo(BinaryTreeNode<T> nodo){
+        if (nodo == null) return true;
+        int alturaIzq = altura(nodo.getLeft());
+        int alturaDer = altura(nodo.getRight());
+
+        int diferencia;
+        if(alturaIzq > alturaDer)
+            diferencia = alturaIzq - alturaDer;
+        else
+            diferencia = alturaDer - alturaIzq;
+        if(diferencia>1) return false;
+        return  esEquilibradoNodo(nodo.getLeft()) && esEquilibradoNodo(nodo.getRight());
+    }
+
+    private int altura(BinaryTreeNode<T> nodo){
+        if(nodo == null) return 0;
+
+        int alturaIzq = altura(nodo.getLeft());
+        int alturaDer = altura(nodo.getRight());
+
+        if(alturaIzq > alturaDer)
+            return alturaIzq + 1;
+        else
+            return alturaDer + 1;
+    }
+
+    public UnorderedList<T> hojas(){
+        UnorderedList<T> listaHojas = new UnorderedList<>();
+        obtenerHojas(root, listaHojas);
+        return listaHojas;
+    }
+
+    private void obtenerHojas(BinaryTreeNode<T> nodo, UnorderedList<T> list){
+        if(nodo == null) return;
+        if(nodo.getLeft() == null && nodo.getRight() == null){
+            list.addToRear(nodo.getElement());
+            return;
+        }
+        obtenerHojas(nodo.getLeft(), list);
+        obtenerHojas(nodo.getRight(), list);
+    }
+
+    public int sumarNodosInternos(BinaryTreeNode<T> nodo){
+        return  sumarInternos(root);
+    }
+
+    private int sumarInternos(BinaryTreeNode<T> nodo){
+        if(nodo == null) return 0;
+
+        if(nodo.getLeft() == null && nodo.getRight() == null)
+            return 0;
+
+        int valor = (Integer) nodo.getElement();
+        int sumaIzq = sumarInternos(nodo.getLeft());
+        int sumaDer = sumarInternos(nodo.getRight());
+
+        return valor + sumaIzq + sumaDer;
+    }
 }

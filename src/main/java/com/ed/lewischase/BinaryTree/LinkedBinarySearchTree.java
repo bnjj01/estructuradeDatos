@@ -115,30 +115,50 @@ public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements Bi
     @Override
     public void removeAllOcurrences(T targetElement) throws ElementNotFoundException{
         removeElement(targetElement);
-        
+
         while(contains(targetElement)) removeElement(targetElement);
     }
 
     @Override
     public T removeMin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        T element;
+        try{
+            element = removeElement(findMin());
+        }catch (ElementNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        return element;
     }
 
     @Override
     public T removeMax() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        T element;
+        try{
+            element = removeElement(findMax());
+        }catch (ElementNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        return element;
     }
 
     @Override
     public T findMin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isEmpty()) return null;
+        BinaryTreeNode<T> current = root;
+        while (current.getLeft() != null){
+            current = current.getLeft();
+        }
+        return current.getElement();
     }
 
     @Override
     public T findMax() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(isEmpty()) return null;
+        BinaryTreeNode<T> current = root;
+
+        while (current.getRight() != null){
+            current = current.getRight();
+        }
+        return current.getElement();
     }
-    
-    
-    
 }
