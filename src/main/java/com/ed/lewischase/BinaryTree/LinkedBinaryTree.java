@@ -99,17 +99,17 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 
     @Override
     public Iterator<T> iteratorInOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new inOrderiterator<>(root);
     }
 
     @Override
     public Iterator<T> iteratorPreOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new PreOrderIterator(root);
     }
 
     @Override
     public Iterator<T> iteratorPostOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new PostOrderIterator<>(root);
     }
 
     @Override
