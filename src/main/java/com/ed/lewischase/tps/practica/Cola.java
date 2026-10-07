@@ -1,9 +1,32 @@
 package com.ed.lewischase.tps.practica;
 
+import com.ed.lewischase.queue.EmptyQueueException;
 import com.ed.lewischase.queue.LinkedQueue;
 import com.ed.lewischase.stack.LinkedStack;
 
 public class Cola {
+
+    public LinkedQueue<Integer> IntercalarMitades(LinkedQueue<Integer> cola){
+        LinkedQueue<Integer> colaAuxiliar = new LinkedQueue<>();
+        int mitadCola=cola.size()/2;
+        for(int i=0; i<mitadCola;i++){
+            try {
+                colaAuxiliar.enqueue(cola.dequeue());
+            }catch (Exception e){
+                System.out.println("Error: "+e.getMessage());
+            }
+        }
+
+        while(!colaAuxiliar.isEmpty()){
+            try{
+                cola.enqueue(colaAuxiliar.dequeue());
+                cola.enqueue(cola.dequeue());
+            } catch (EmptyQueueException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return cola;
+    }
 
     public LinkedQueue<Integer> invertirElementosCola(LinkedQueue<Integer> col,int k){
         LinkedStack<Integer> pila = new LinkedStack<>();
