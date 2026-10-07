@@ -140,6 +140,20 @@ public class Lista {
         return reporte;
     }
 
+    public boolean balanceadoUniversal(String cadena){
+        LinkedStack<Character> pila = new LinkedStack<>();
+        for(int i=0; i<cadena.length();i++){
+            char letra = cadena.charAt(i);
+            try{
+                if(letra=='('){
+                    pila.push(letra);
+                }else
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         LinkedList<Integer> L1 = new LinkedList<>();
         LinkedList<Integer> L2 = new LinkedList<>();

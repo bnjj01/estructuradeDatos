@@ -7,7 +7,7 @@ public interface StackADT<T> {
     public void push(T element);
     //Elimina y devuelve el elemento de la parte superior de la pila
     public T pop() throws EmptyStackException;
-    //Devuelve, sin eliminarlo, el elemento de la parte superiord de la pila.
+    //Devuelve, sin eliminarlo, el elemento de la parte superior de la pila.
     public T peek() throws EmptyStackException;
     //Devuelve true si esta pila no contiene elementos.
     public boolean isEmpty();
