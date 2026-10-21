@@ -5,8 +5,8 @@ package com.ed.lewischase.LinkedNode;
  * @author Lewis / Chase
  */
 public class BinaryTreeNode<T> {
-    private T element;
-    private BinaryTreeNode<T> left, right;
+    protected T element;
+    protected BinaryTreeNode<T> left, right;
     
     /**
      * Crea un nuevo nodo del árbol con los datos especificados.

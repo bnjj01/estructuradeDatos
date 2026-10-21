@@ -1,9 +1,6 @@
 package com.ed.lewischase.tps.practica;
 
-import com.ed.lewischase.list.ElementNotFoundException;
-import com.ed.lewischase.list.EmptyListException;
-import com.ed.lewischase.list.LinkedList;
-import com.ed.lewischase.list.UnorderedList;
+import com.ed.lewischase.list.*;
 import com.ed.lewischase.queue.EmptyQueueException;
 import com.ed.lewischase.queue.LinkedQueue;
 import com.ed.lewischase.stack.EmptyStackException;
@@ -95,6 +92,25 @@ public class Lista {
         return true;
     }
 
+    public boolean estBalanceado(UnorderedList<Character> cadena){
+        LinkedStack<Character> pila = new LinkedStack<>();
+        Iterator<Character> iter = cadena.iterator();
+        while(iter.hasNext()){
+            char letra = iter.next();
+            try {
+                if(letra=='('){
+                    pila.push(letra);
+                }else if(letra==')'){
+                    pila.pop();
+                }
+            } catch (EmptyStackException e) {
+                return false;
+            }
+        }
+        return pila.isEmpty();
+    }
+
+
     public UnorderedList<Integer> eliminarObjetivo(UnorderedList<Integer> lista, int objetivo){
         while(lista.contains(objetivo)){
             try {
@@ -140,20 +156,48 @@ public class Lista {
         return reporte;
     }
 
-    public boolean balanceadoUniversal(String cadena){
+    public boolean balanceadorUniversal(String cadena){
         LinkedStack<Character> pila = new LinkedStack<>();
         for(int i=0; i<cadena.length();i++){
             char letra = cadena.charAt(i);
+            char eliminado=' ';
             try{
-                if(letra=='('){
+                if(letra=='(' || letra=='{' || letra=='['){
                     pila.push(letra);
-                }else
+                }else if(letra==')' || letra=='}' || letra==']'){
+                    eliminado = pila.pop();
+
+                    if(letra == ')' && eliminado!='(') return false;
+                    if(letra == '}' && eliminado!='{') return false;
+                    if(letra == ']' && eliminado!='[') return false;
+
+                }
+                if(eliminado+letra!='('+')' && eliminado+letra!='{'+'}' && eliminado+letra!='['+']'){
+                    return false;
+                }
+            } catch (EmptyStackException e) {
+                return (false);
             }
         }
-
-        return true;
+        return pila.isEmpty();
     }
 
+    //Ejercicio Lista Indexada
+    public IndexedList<String> extraerPares(IndexedList<String> lista){
+        IndexedList<String> nuevaLista = new IndexedList<>();
+
+        for(int i=lista.size()-1; i>=0; i--){
+            if((i % 2) == 0){
+                try{
+                    String elementoExtraido=lista.remove(i);
+                    nuevaLista.add(0, elementoExtraido);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return nuevaLista;
+    }
     public static void main(String[] args) {
         LinkedList<Integer> L1 = new LinkedList<>();
         LinkedList<Integer> L2 = new LinkedList<>();
