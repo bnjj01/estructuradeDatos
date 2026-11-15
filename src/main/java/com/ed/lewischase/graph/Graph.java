@@ -342,6 +342,57 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
+    /**
+     * Retorna una lista con los vértices adyacentes al nodo especificado.
+     */
+    @Override
+    public UnorderedListADT<T> adyacentesA(T nodo) {
+        return adyacentesA(getIndex(nodo));
+    }
+
+    /**
+     * Método auxiliar sobrecargado que obtiene los vértices adyacentes
+     * a partir del índice del vértice en la matriz de adyacencia.
+     */
+    public UnorderedListADT<T> adyacentesA(int index) {
+        UnorderedListADT<T> adyacentes = new UnorderedList<T>();
+
+        if (indexIsValid(index)) {
+            for (int i = 0; i < numVertices; i++) {
+                if (adjMatrix[index][i]) {
+                    adyacentes.addToRear(vertices[i]);
+                }
+            }
+        }
+
+        return adyacentes;
+    }
+
+    /**
+     * Retorna una lista con aquellos vértices que no pueden ser accedidos
+     * desde ningún otro vértice (vértices aislados / sin aristas incidentes).
+     */
+    @Override
+    public UnorderedListADT<T> inaccesibles() {
+        UnorderedListADT<T> listaInaccesibles = new UnorderedList<T>();
+
+        for (int j = 0; j < numVertices; j++) {
+            boolean tieneEntrada = false;
+
+            for (int i = 0; i < numVertices && !tieneEntrada; i++) {
+                if (i != j && adjMatrix[i][j]) {
+                    tieneEntrada = true;
+                }
+            }
+
+            if (!tieneEntrada) {
+                listaInaccesibles.addToRear(vertices[j]);
+            }
+        }
+
+        return listaInaccesibles;
+    }
+
     // =========================================================================
     // MÉTODOS AUXILIARES PROTEGIDOS
     // =========================================================================

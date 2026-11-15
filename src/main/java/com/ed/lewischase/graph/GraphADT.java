@@ -4,6 +4,7 @@ package com.ed.lewischase.graph;
  * GraphADT define la interface para una estructura de datos Grafo.
  */
 import java.util.Iterator;
+import com.ed.lewischase.list.UnorderedListADT;
 
 public interface GraphADT<T> {
     /**
@@ -67,4 +68,19 @@ public interface GraphADT<T> {
      * @return Una cadena de caracteres, con la representación de la matriz de adyacencia.
      */
     public String toString();
+    /**
+     * Retorna una lista con los vértices adyacentes al nodo especificado.
+     *
+     * @param nodo El vértice del cual se buscan los adyacentes.
+     * @return Una lista con los vértices adyacentes.
+     */
+    public UnorderedListADT<T> adyacentesA(T nodo);
+
+    /**
+     * Retorna una lista con aquellos vértices que no pueden ser accedidos
+     * desde ningún otro vértice.
+     *
+     * @return Una lista con los vértices inaccesibles.
+     */
+    public UnorderedListADT<T> inaccesibles();
 }
