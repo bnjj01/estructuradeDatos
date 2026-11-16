@@ -1,8 +1,8 @@
 package com.ed.lewischase.graph;
 
 /**
- * NetworkADT define la interfaz para una red (grafo ponderado / con pesos).
- * Basado en el Listing 24.2 de Lewis & Chase.
+ * NetworkADT define la interfaz para una red.
+ *
  */
 public interface NetworkADT<T> extends GraphADT<T> {
     /**
@@ -18,7 +18,7 @@ public interface NetworkADT<T> extends GraphADT<T> {
      * Retorna el peso total del camino más económico en esta red.
      *
      * @param vertex1 el vértice de origen
-     * @param vertex2 el vértice de destino
+     * @param vertex2 el vértice de destinos
      * @return el peso/costo del camino mínimo
      */
     public double shortestPathWeight(T vertex1, T vertex2);

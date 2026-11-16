@@ -10,20 +10,13 @@ import com.ed.lewischase.stack.EmptyStackException;
 import com.ed.lewischase.stack.LinkedStack;
 import com.ed.lewischase.stack.StackADT;
 
-/**
- * Graph representa una implementación de un grafo no dirigido
- * utilizando una matriz de adyacencia (Lewis & Chase, Cap. 24).
- */
 public class Graph<T> implements GraphADT<T> {
     protected final int DEFAULT_CAPACITY = 10;
-    protected int numVertices; // Número de vértices en el grafo
-    protected boolean[][] adjMatrix; // Matriz de adyacencia
-    protected T[] vertices; // Valores de los vértices
+    protected int numVertices;
+    protected boolean[][] adjMatrix;
+    protected T[] vertices;
     protected int modCount;
 
-    /**
-     * Constructor: crea un grafo vacío.
-     */
     @SuppressWarnings("unchecked")
     public Graph() {
         numVertices = 0;
@@ -32,27 +25,16 @@ public class Graph<T> implements GraphADT<T> {
         modCount = 0;
     }
 
-    /**
-     * Retorna el número de vértices en el grafo.
-     */
     @Override
     public int size() {
         return numVertices;
     }
 
-    /**
-     * Informa si el grafo se encuentra vacío o no.
-     */
     @Override
     public boolean isEmpty() {
         return (numVertices == 0);
     }
 
-    /**
-     * Informa si el grafo está conectado.
-     * Según Lewis & Chase: un grafo es conexo si y solo si el número de
-     * vértices en el recorrido BFS es igual al número total de vértices.
-     */
     @Override
     public boolean isConnected() {
         if (isEmpty()) {
@@ -70,9 +52,6 @@ public class Graph<T> implements GraphADT<T> {
         return (count == numVertices);
     }
 
-    /**
-     * Agrega un vértice al grafo, expandiendo la capacidad si es necesario.
-     */
     @Override
     public void addVertex(T vertex) {
         if (numVertices == vertices.length) {
@@ -88,9 +67,6 @@ public class Graph<T> implements GraphADT<T> {
         modCount++;
     }
 
-    /**
-     * Remueve un vértice del grafo.
-     */
     @Override
     public void removeVertex(T vertex) {
         removeVertex(getIndex(vertex));
@@ -100,27 +76,23 @@ public class Graph<T> implements GraphADT<T> {
         if (indexIsValid(index)) {
             numVertices--;
 
-            // 1. Desplazar los vértices en el arreglo
             for (int i = index; i < numVertices; i++) {
                 vertices[i] = vertices[i + 1];
             }
             vertices[numVertices] = null;
 
-            // 2. Desplazar las filas de la matriz hacia arriba
             for (int i = index; i < numVertices; i++) {
                 for (int j = 0; j <= numVertices; j++) {
                     adjMatrix[i][j] = adjMatrix[i + 1][j];
                 }
             }
 
-            // 3. Desplazar las columnas de la matriz hacia la izquierda
             for (int i = index; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
                     adjMatrix[j][i] = adjMatrix[j][i + 1];
                 }
             }
 
-            // Limpiar la última fila y columna
             for (int i = 0; i <= numVertices; i++) {
                 adjMatrix[numVertices][i] = false;
                 adjMatrix[i][numVertices] = false;
@@ -130,9 +102,6 @@ public class Graph<T> implements GraphADT<T> {
         }
     }
 
-    /**
-     * Agrega una arista entre dos vértices (simétrica por ser no dirigido).
-     */
     @Override
     public void addEdge(T vertex1, T vertex2) {
         addEdge(getIndex(vertex1), getIndex(vertex2));
@@ -146,9 +115,6 @@ public class Graph<T> implements GraphADT<T> {
         }
     }
 
-    /**
-     * Elimina una arista entre dos vértices de un grafo.
-     */
     @Override
     public void removeEdge(T vertex1, T vertex2) {
         removeEdge(getIndex(vertex1), getIndex(vertex2));
@@ -162,9 +128,6 @@ public class Graph<T> implements GraphADT<T> {
         }
     }
 
-    /**
-     * Retorna un iterador con el recorrido en anchura (BFS) desde startVertex.
-     */
     @Override
     public Iterator<T> iteratorBFS(T startVertex) {
         return iteratorBFS(getIndex(startVertex));
@@ -192,7 +155,6 @@ public class Graph<T> implements GraphADT<T> {
                 x = traversalQueue.dequeue();
                 resultList.addToRear(vertices[x]);
 
-                // Buscar todos los vértices adyacentes a x no visitados
                 for (int i = 0; i < numVertices; i++) {
                     if (adjMatrix[x][i] && !visited[i]) {
                         traversalQueue.enqueue(i);
@@ -201,7 +163,6 @@ public class Graph<T> implements GraphADT<T> {
                 }
             }
         } catch (EmptyQueueException e) {
-            // Excepción controlada: el bucle verifica !isEmpty() previamente
         }
 
         return resultList.iterator();
@@ -239,7 +200,6 @@ public class Graph<T> implements GraphADT<T> {
                 x = traversalStack.peek();
                 found = false;
 
-                // Buscar un vértice adyacente a x no visitado y apilarlo
                 for (int i = 0; (i < numVertices) && !found; i++) {
                     if (adjMatrix[x][i] && !visited[i]) {
                         traversalStack.push(i);
@@ -253,17 +213,11 @@ public class Graph<T> implements GraphADT<T> {
                 }
             }
         } catch (EmptyStackException e) {
-            // Excepción controlada: el bucle verifica !isEmpty() previamente
         }
 
         return resultList.iterator();
     }
 
-    /**
-     * Retorna un iterador que contiene el camino más corto entre dos vértices.
-     * Implementado según la Sección 24.4 de Lewis & Chase (variación de BFS
-     * almacenando el predecesor de cada vértice).
-     */
     @Override
     public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) {
         return iteratorShortestPath(getIndex(startVertex), getIndex(targetVertex));
@@ -313,16 +267,11 @@ public class Graph<T> implements GraphADT<T> {
                     }
                 }
             }
-        } catch (EmptyQueueException e) {
-            // Excepción controlada
-        }
-
-        // Si no se llegó al vértice destino, no hay camino posible
+        } catch (EmptyQueueException e) {}
         if (index != targetIndex) {
             return resultList.iterator();
         }
 
-        // Reconstruir el camino desde targetIndex hacia startIndex usando una pila
         StackADT<Integer> stack = new LinkedStack<Integer>();
         index = targetIndex;
         stack.push(index);
@@ -342,18 +291,11 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
-    /**
-     * Retorna una lista con los vértices adyacentes al nodo especificado.
-     */
     @Override
     public UnorderedListADT<T> adyacentesA(T nodo) {
         return adyacentesA(getIndex(nodo));
     }
 
-    /**
-     * Método auxiliar sobrecargado que obtiene los vértices adyacentes
-     * a partir del índice del vértice en la matriz de adyacencia.
-     */
     public UnorderedListADT<T> adyacentesA(int index) {
         UnorderedListADT<T> adyacentes = new UnorderedList<T>();
 
@@ -368,10 +310,6 @@ public class Graph<T> implements GraphADT<T> {
         return adyacentes;
     }
 
-    /**
-     * Retorna una lista con aquellos vértices que no pueden ser accedidos
-     * desde ningún otro vértice (vértices aislados / sin aristas incidentes).
-     */
     @Override
     public UnorderedListADT<T> inaccesibles() {
         UnorderedListADT<T> listaInaccesibles = new UnorderedList<T>();
@@ -393,13 +331,6 @@ public class Graph<T> implements GraphADT<T> {
         return listaInaccesibles;
     }
 
-    // =========================================================================
-    // MÉTODOS AUXILIARES PROTEGIDOS
-    // =========================================================================
-
-    /**
-     * Duplica la capacidad del arreglo de vértices y de la matriz de adyacencia.
-     */
     @SuppressWarnings("unchecked")
     protected void expandCapacity() {
         T[] largerVertices = (T[]) (new Object[vertices.length * 2]);
@@ -416,9 +347,6 @@ public class Graph<T> implements GraphADT<T> {
         adjMatrix = largerAdjMatrix;
     }
 
-    /**
-     * Retorna el índice del vértice especificado, o -1 si no existe.
-     */
     protected int getIndex(T vertex) {
         for (int i = 0; i < numVertices; i++) {
             if (vertices[i].equals(vertex)) {
@@ -428,16 +356,10 @@ public class Graph<T> implements GraphADT<T> {
         return -1;
     }
 
-    /**
-     * Verifica si un índice es válido dentro del número actual de vértices.
-     */
     protected boolean indexIsValid(int index) {
         return ((index >= 0) && (index < numVertices));
     }
 
-    /**
-     * Retorna una representación de la matriz de adyacencia en formato de String.
-     */
     @Override
     public String toString() {
         if (numVertices == 0) {

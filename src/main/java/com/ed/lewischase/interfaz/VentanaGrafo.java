@@ -9,7 +9,6 @@ public class VentanaGrafo extends javax.swing.JFrame {
 
     private MatrixDirectedGraph<String> grafo = new MatrixDirectedGraph<>();
 
-    // Componentes de la interfaz
     private JTextField txtVertice;
     private JTextField txtOrigenArista;
     private JTextField txtDestinoArista;
@@ -40,13 +39,11 @@ public class VentanaGrafo extends javax.swing.JFrame {
         getContentPane().setBackground(new Color(242, 242, 242));
         setLayout(null);
 
-        // --- TÍTULO PRINCIPAL ---
         JLabel lblTitulo = new JLabel("Grafo Dirigido Ponderado", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 14));
         lblTitulo.setBounds(190, 10, 240, 25);
         add(lblTitulo);
 
-        // --- SECCIÓN 1: VÉRTICES ---
         JLabel lblVertices = new JLabel("Vértices", SwingConstants.CENTER);
         lblVertices.setBounds(210, 40, 200, 20);
         add(lblVertices);
@@ -68,7 +65,6 @@ public class VentanaGrafo extends javax.swing.JFrame {
         btnEliminarVertice.addActionListener(evt -> btnEliminarVerticeActionPerformed());
         add(btnEliminarVertice);
 
-        // --- SECCIÓN 2: ARISTAS Y COSTOS ---
         JLabel lblAristas = new JLabel("Aristas", SwingConstants.CENTER);
         lblAristas.setBounds(210, 145, 200, 20);
         add(lblAristas);
@@ -110,7 +106,6 @@ public class VentanaGrafo extends javax.swing.JFrame {
         btnEliminarArista.addActionListener(evt -> btnEliminarAristaActionPerformed());
         add(btnEliminarArista);
 
-        // --- SECCIÓN 3: VISUALIZAR Y RECORRIDOS (DFS / BFS) ---
         JLabel lblVisualizar = new JLabel("Visualizar", SwingConstants.CENTER);
         lblVisualizar.setBounds(160, 280, 220, 20);
         add(lblVisualizar);
@@ -134,7 +129,6 @@ public class VentanaGrafo extends javax.swing.JFrame {
         btnBFS.addActionListener(evt -> btnBFSActionPerformed());
         add(btnBFS);
 
-        // --- SECCIÓN 4: CAMINO MÍNIMO (DIJKSTRA Y SP) ---
         JLabel lblCaminoCorto = new JLabel("Camino Mínimo entre dos Vértices", SwingConstants.CENTER);
         lblCaminoCorto.setBounds(160, 455, 300, 20);
         add(lblCaminoCorto);
@@ -169,10 +163,6 @@ public class VentanaGrafo extends javax.swing.JFrame {
         btnDijkstra.addActionListener(evt -> btnDijkstraActionPerformed());
         add(btnDijkstra);
     }
-
-    // =========================================================================
-    // EVENTOS DE LOS BOTONES
-    // =========================================================================
 
     private void btnAgregarVerticeActionPerformed() {
         String vertice = txtVertice.getText().trim();
