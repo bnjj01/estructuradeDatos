@@ -7,13 +7,13 @@ import java.util.Iterator;
 
 public class VentanaGrafo extends javax.swing.JFrame {
 
-    // Instancia del grafo dirigido como indica la página 6 del tutorial
     private MatrixDirectedGraph<String> grafo = new MatrixDirectedGraph<>();
 
-    // Componentes de la interfaz (nombres iguales a los del tutorial)
+    // Componentes de la interfaz
     private JTextField txtVertice;
     private JTextField txtOrigenArista;
     private JTextField txtDestinoArista;
+    private JTextField txtPesoArista;
     private JTextArea txtVisualizar;
     private JTextField txtOrigenSP;
     private JTextField txtDestinoSP;
@@ -25,134 +25,153 @@ public class VentanaGrafo extends javax.swing.JFrame {
     private JButton btnDFS;
     private JButton btnBFS;
     private JButton btnSP;
+    private JButton btnDijkstra;
 
     public VentanaGrafo() {
         initComponents();
     }
 
     private void initComponents() {
-        setTitle("Grafos");
+        setTitle("Grafos - Red Dirigida y Algoritmo de Dijkstra");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(580, 560);
+        setSize(620, 600);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(new Color(242, 242, 242));
-        setLayout(null); // Diseño libre equivalente al área de diseño del tutorial
+        setLayout(null);
 
         // --- TÍTULO PRINCIPAL ---
-        JLabel lblTitulo = new JLabel("Grafo Dirigido", SwingConstants.CENTER);
-        lblTitulo.setBounds(190, 10, 200, 25);
+        JLabel lblTitulo = new JLabel("Grafo Dirigido Ponderado", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 14));
+        lblTitulo.setBounds(190, 10, 240, 25);
         add(lblTitulo);
 
         // --- SECCIÓN 1: VÉRTICES ---
         JLabel lblVertices = new JLabel("Vértices", SwingConstants.CENTER);
-        lblVertices.setBounds(190, 40, 200, 20);
+        lblVertices.setBounds(210, 40, 200, 20);
         add(lblVertices);
 
         txtVertice = new JTextField();
-        txtVertice.setBounds(215, 65, 150, 28);
+        txtVertice.setBounds(235, 65, 150, 28);
         add(txtVertice);
 
         btnAgregarVertice = new JButton("Agregar Vértice");
-        btnAgregarVertice.setBackground(new Color(144, 238, 144)); // Verde
-        btnAgregarVertice.setBounds(130, 105, 130, 28);
+        btnAgregarVertice.setBackground(new Color(144, 238, 144));
+        btnAgregarVertice.setBounds(150, 105, 130, 28);
         btnAgregarVertice.addActionListener(evt -> btnAgregarVerticeActionPerformed());
         add(btnAgregarVertice);
 
         btnEliminarVertice = new JButton("Eliminar Vértice");
-        btnEliminarVertice.setBackground(new Color(240, 50, 50)); // Rojo
+        btnEliminarVertice.setBackground(new Color(240, 50, 50));
         btnEliminarVertice.setForeground(Color.WHITE);
-        btnEliminarVertice.setBounds(320, 105, 130, 28);
+        btnEliminarVertice.setBounds(340, 105, 130, 28);
         btnEliminarVertice.addActionListener(evt -> btnEliminarVerticeActionPerformed());
         add(btnEliminarVertice);
 
-        // --- SECCIÓN 2: ARISTAS ---
+        // --- SECCIÓN 2: ARISTAS Y COSTOS ---
         JLabel lblAristas = new JLabel("Aristas", SwingConstants.CENTER);
-        lblAristas.setBounds(190, 150, 200, 20);
+        lblAristas.setBounds(210, 145, 200, 20);
         add(lblAristas);
 
         JLabel lblVerticeOrigen = new JLabel("Vértice Origen", SwingConstants.CENTER);
-        lblVerticeOrigen.setBounds(130, 175, 130, 20);
+        lblVerticeOrigen.setBounds(90, 170, 130, 20);
         add(lblVerticeOrigen);
 
-        JLabel lblVerticeDestino = new JLabel("Vertice Destino", SwingConstants.CENTER);
-        lblVerticeDestino.setBounds(320, 175, 130, 20);
+        JLabel lblVerticeDestino = new JLabel("Vértice Destino", SwingConstants.CENTER);
+        lblVerticeDestino.setBounds(245, 170, 130, 20);
         add(lblVerticeDestino);
 
+        JLabel lblPesoArista = new JLabel("Costo / Peso", SwingConstants.CENTER);
+        lblPesoArista.setBounds(400, 170, 110, 20);
+        add(lblPesoArista);
+
         txtOrigenArista = new JTextField();
-        txtOrigenArista.setBounds(130, 200, 130, 28);
+        txtOrigenArista.setBounds(90, 195, 130, 28);
         add(txtOrigenArista);
 
         txtDestinoArista = new JTextField();
-        txtDestinoArista.setBounds(320, 200, 130, 28);
+        txtDestinoArista.setBounds(245, 195, 130, 28);
         add(txtDestinoArista);
+
+        txtPesoArista = new JTextField("1.0");
+        txtPesoArista.setBounds(400, 195, 110, 28);
+        add(txtPesoArista);
 
         btnAgregarArista = new JButton("Agregar Arista");
         btnAgregarArista.setBackground(new Color(144, 238, 144));
-        btnAgregarArista.setBounds(130, 240, 130, 28);
+        btnAgregarArista.setBounds(150, 235, 130, 28);
         btnAgregarArista.addActionListener(evt -> btnAgregarAristaActionPerformed());
         add(btnAgregarArista);
 
         btnEliminarArista = new JButton("Eliminar Arista");
         btnEliminarArista.setBackground(new Color(240, 50, 50));
         btnEliminarArista.setForeground(Color.WHITE);
-        btnEliminarArista.setBounds(320, 240, 130, 28);
+        btnEliminarArista.setBounds(340, 235, 130, 28);
         btnEliminarArista.addActionListener(evt -> btnEliminarAristaActionPerformed());
         add(btnEliminarArista);
 
         // --- SECCIÓN 3: VISUALIZAR Y RECORRIDOS (DFS / BFS) ---
         JLabel lblVisualizar = new JLabel("Visualizar", SwingConstants.CENTER);
-        lblVisualizar.setBounds(160, 290, 200, 20);
+        lblVisualizar.setBounds(160, 280, 220, 20);
         add(lblVisualizar);
 
         txtVisualizar = new JTextArea();
         txtVisualizar.setEditable(false);
+        txtVisualizar.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollVisualizar = new JScrollPane(txtVisualizar);
-        scrollVisualizar.setBounds(140, 315, 240, 100);
+        scrollVisualizar.setBounds(70, 305, 380, 135);
         add(scrollVisualizar);
 
         btnDFS = new JButton("DFS");
         btnDFS.setBackground(new Color(144, 238, 144));
-        btnDFS.setBounds(410, 325, 80, 28);
+        btnDFS.setBounds(470, 330, 90, 28);
         btnDFS.addActionListener(evt -> btnDFSActionPerformed());
         add(btnDFS);
 
         btnBFS = new JButton("BFS");
         btnBFS.setBackground(new Color(144, 238, 144));
-        btnBFS.setBounds(410, 365, 80, 28);
+        btnBFS.setBounds(470, 375, 90, 28);
         btnBFS.addActionListener(evt -> btnBFSActionPerformed());
         add(btnBFS);
 
-        // --- SECCIÓN 4: CAMINO MÁS CORTO (SP) ---
-        JLabel lblCaminoCorto = new JLabel("Camino más corto", SwingConstants.CENTER);
-        lblCaminoCorto.setBounds(190, 435, 200, 20);
+        // --- SECCIÓN 4: CAMINO MÍNIMO (DIJKSTRA Y SP) ---
+        JLabel lblCaminoCorto = new JLabel("Camino Mínimo entre dos Vértices", SwingConstants.CENTER);
+        lblCaminoCorto.setBounds(160, 455, 300, 20);
         add(lblCaminoCorto);
 
-        JLabel lblOrigenSP = new JLabel("Origen");
-        lblOrigenSP.setBounds(75, 465, 50, 28);
+        JLabel lblOrigenSP = new JLabel("Origen:");
+        lblOrigenSP.setBounds(45, 485, 50, 28);
         add(lblOrigenSP);
 
         txtOrigenSP = new JTextField();
-        txtOrigenSP.setBounds(130, 465, 110, 28);
+        txtOrigenSP.setBounds(95, 485, 95, 28);
         add(txtOrigenSP);
 
-        JLabel lblDestinoSP = new JLabel("Destino");
-        lblDestinoSP.setBounds(260, 465, 55, 28);
+        JLabel lblDestinoSP = new JLabel("Destino:");
+        lblDestinoSP.setBounds(205, 485, 55, 28);
         add(lblDestinoSP);
 
         txtDestinoSP = new JTextField();
-        txtDestinoSP.setBounds(315, 465, 110, 28);
+        txtDestinoSP.setBounds(260, 485, 95, 28);
         add(txtDestinoSP);
 
         btnSP = new JButton("SP");
+        btnSP.setToolTipText("Camino con menor cantidad de aristas (BFS)");
         btnSP.setBackground(new Color(144, 238, 144));
-        btnSP.setBounds(445, 465, 70, 28);
+        btnSP.setBounds(370, 485, 65, 28);
         btnSP.addActionListener(evt -> btnSPActionPerformed());
         add(btnSP);
+
+        btnDijkstra = new JButton("Dijkstra (Costo Mín.)");
+        btnDijkstra.setToolTipText("Muestra vértices, aristas y costos del camino mínimo usando Dijkstra");
+        btnDijkstra.setBackground(new Color(100, 200, 255));
+        btnDijkstra.setBounds(445, 485, 145, 28);
+        btnDijkstra.addActionListener(evt -> btnDijkstraActionPerformed());
+        add(btnDijkstra);
     }
 
     // =========================================================================
-    // EVENTOS DE LOS BOTONES (Siguiendo la lógica del tutorial PDF)
+    // EVENTOS DE LOS BOTONES
     // =========================================================================
 
     private void btnAgregarVerticeActionPerformed() {
@@ -182,15 +201,33 @@ public class VentanaGrafo extends javax.swing.JFrame {
     private void btnAgregarAristaActionPerformed() {
         String origen = txtOrigenArista.getText().trim();
         String destino = txtDestinoArista.getText().trim();
+        String pesoStr = txtPesoArista.getText().trim();
+
         if (origen.isEmpty() || destino.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el vértice de origen y el de destino");
             return;
         }
-        grafo.addEdge(origen, destino);
+
+        double peso = 1.0;
+        if (!pesoStr.isEmpty()) {
+            try {
+                peso = Double.parseDouble(pesoStr);
+                if (peso < 0) {
+                    JOptionPane.showMessageDialog(this, "Para el algoritmo de Dijkstra el costo no debe ser negativo");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Ingrese un valor numérico válido para el costo/peso");
+                return;
+            }
+        }
+
+        grafo.addEdge(origen, destino, peso);
         txtOrigenArista.setText("");
         txtDestinoArista.setText("");
+        txtPesoArista.setText("1.0");
         txtVisualizar.setText(grafo.toString());
-        JOptionPane.showMessageDialog(this, "Arista dirigida agregada: " + origen + " -> " + destino);
+        JOptionPane.showMessageDialog(this, "Arista agregada: (" + origen + " -> " + destino + ") con costo " + peso);
     }
 
     private void btnEliminarAristaActionPerformed() {
@@ -212,14 +249,8 @@ public class VentanaGrafo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "El grafo está vacío");
             return;
         }
-        // Si escribió un vértice en el campo "Vértices", inicia desde ahí; si no, lo pide o inicia desde el índice 0
         String inicio = txtVertice.getText().trim();
-        Iterator<String> it;
-        if (!inicio.isEmpty()) {
-            it = grafo.iteratorDFS(inicio);
-        } else {
-            it = grafo.iteratorDFS(0);
-        }
+        Iterator<String> it = !inicio.isEmpty() ? grafo.iteratorDFS(inicio) : grafo.iteratorDFS(0);
         mostrarRecorrido("Recorrido en Profundidad (DFS):", it);
     }
 
@@ -229,12 +260,7 @@ public class VentanaGrafo extends javax.swing.JFrame {
             return;
         }
         String inicio = txtVertice.getText().trim();
-        Iterator<String> it;
-        if (!inicio.isEmpty()) {
-            it = grafo.iteratorBFS(inicio);
-        } else {
-            it = grafo.iteratorBFS(0);
-        }
+        Iterator<String> it = !inicio.isEmpty() ? grafo.iteratorBFS(inicio) : grafo.iteratorBFS(0);
         mostrarRecorrido("Recorrido en Anchura (BFS):", it);
     }
 
@@ -242,15 +268,26 @@ public class VentanaGrafo extends javax.swing.JFrame {
         String origen = txtOrigenSP.getText().trim();
         String destino = txtDestinoSP.getText().trim();
         if (origen.isEmpty() || destino.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese el origen y el destino para el camino más corto");
+            JOptionPane.showMessageDialog(this, "Ingrese el origen y el destino");
             return;
         }
         Iterator<String> it = grafo.iteratorShortestPath(origen, destino);
         if (!it.hasNext()) {
             txtVisualizar.setText("No existe un camino dirigido desde " + origen + " hasta " + destino);
         } else {
-            mostrarRecorrido("Camino más corto (" + origen + " -> " + destino + "):", it);
+            mostrarRecorrido("Camino con menos saltos (BFS) de " + origen + " a " + destino + ":", it);
         }
+    }
+
+    private void btnDijkstraActionPerformed() {
+        String origen = txtOrigenSP.getText().trim();
+        String destino = txtDestinoSP.getText().trim();
+        if (origen.isEmpty() || destino.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el vértice de origen y el de destino");
+            return;
+        }
+        String detalle = grafo.obtenerDetalleCaminoMinimoDijkstra(origen, destino);
+        txtVisualizar.setText(detalle);
     }
 
     private void mostrarRecorrido(String titulo, Iterator<String> it) {
